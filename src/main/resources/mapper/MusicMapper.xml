@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.systop.dao.MusicMapper" >
+    <select id="musicall" resultType="music">
+		select * from musicmant where music_status=1 ORDER BY music_id desc
+    </select>
+    <insert id="musicadd"  parameterType="music">
+        insert into musicmant(music_name,music_image,music_music,music_author_id,music_type) values (#{music_name},#{music_image},#{music_music},#{music_author_id},#{music_type})
+    </insert>
+    <select id="musicselectid" parameterType="Integer" resultType="music">
+         select * from musicmant where music_id=#{music_id}
+    </select>
+    <update id="update_music" parameterType="music">
+    update musicmant
+    <set>
+        <if test="music_name!=null and music_name!=''">
+            music_name=#{music_name},
+        </if>
+        <if test="music_image!=null and music_image!=''">
+            music_image=#{music_image},
+        </if>
+        <if test="music_music!=null and music_music!=''">
+            music_music=#{music_music},
+        </if>
+        <if test="music_author_id!=null and music_author_id!=''">
+            music_author_id=#{music_author_id},
+        </if>
+        <if test="music_type!=null and music_type!=''">
+            music_type=#{music_type},
+        </if>
+        <if test="music_collect!=null and music_collect!=''">
+            music_collect=#{music_collect},
+        </if>
+        <if test="music_hot!=null and music_hot!=''">
+            music_hot=#{music_hot},
+        </if>
+    </set>
+    where music_id=#{music_id}
+</update>
+    <update id="music_delete" parameterType="List">
+        update musicmant
+        <set>
+         music_status=0
+        </set>
+        where music_id in
+        <foreach collection="list" item="music_id" index="index" separator="," open="(" close=")">
+            #{music_id}
+        </foreach>
+    </update>
+    <update id="music_deletefyid" parameterType="Integer">
+        update musicmant set music_status=0 where music_id =#{music_id}
+    </update>
+
+</mapper>

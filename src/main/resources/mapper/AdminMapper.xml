@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.systop.dao.AdminMapper" >
+
+  <select id="login" parameterType="String" resultType="admin">
+		select * from admin where admin_code= #{admin_code} and admin_password=#{admin_password}
+  </select>
+   <select id="selectall" resultType="admin">
+		select * from admin
+  </select>
+
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.systop.dao.ReplyMapper" >
+    <select id="selectall" resultMap="replyResult">
+		select *,(select user_name from user where user_id=reply_dis_user_id ) as dis_name from reply,user where user_id=reply_user_id  and reply_status=1 ORDER BY Reply_id desc
+   </select>
+    <resultMap type="Reply" id="replyResult">
+        <id property="reply_id" column="reply_id"/>
+        <result property="reply_content" column="reply_content"/>
+        <result property="reply_date" column="reply_date"/>
+        <association property="user" javaType="User">
+            <id property="user_id" column="user_id"/>
+            <result property="user_name" column="user_name"/>
+            <result property="dis_name" column="dis_name"/>
+        </association>
+    </resultMap>
+    <update id="reply_delete" parameterType="List">
+        update reply set reply_status=0 where Reply_id in
+        <foreach collection="list" item="Reply_id" index="index" separator="," open="(" close=")">
+            #{Reply_id}
+        </foreach>
+    </update>
+    <update id="reply_deletefyid" parameterType="Integer">
+        update reply set reply_status=0 where reply_id=#{reply_id}
+    </update>
+
+</mapper>

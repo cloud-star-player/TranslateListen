@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.systop.dao.NewsMapper" >
+
+  <!--<select id="login" parameterType="String" resultType="news">-->
+		<!--select * from news where news_code= #{news_code} and news_password=#{news_password}-->
+  <!--</select>-->
+    <!--<sql id="add_insertsql">-->
+         <!--news_code,news_name,news_password,news_state,news_date-->
+    <!--</sql>-->
+    <!--<sql id="add_insertsqlw">-->
+         <!--#{news_code},#{news_name},#{news_password},#{news_state},NOW()-->
+    <!--</sql>-->
+    <insert id="newsadd" parameterType="news">
+        insert into news (news_text,news_title,news_author_id,news_type) values (#{news_text},#{news_title},#{news_author_id},#{news_type})
+    </insert>
+    <select id="selectall" resultType="news">
+		select * from news ORDER BY news_id
+   </select>
+    <select id="newsselect" parameterType="Integer" resultType="news">
+		select * from news where news_id=#{news_id}
+  </select>
+    <delete id="news_delete" parameterType="List">
+        delete from news where news_id in
+        <foreach collection="list" item="news_id" index="index" separator="," open="(" close=")">
+            #{news_id}
+        </foreach>
+    </delete>
+    <delete id="news_deletefyid" parameterType="Integer">
+        delete from news where news_id =#{news_id}
+    </delete>
+    <update id="newsupdate" parameterType="news">
+       update news
+        <set>
+            <if test="news_text!=null and news_text!=''">
+            news_text=#{news_text},
+            </if>
+            <if test="news_title!=null and news_title!=''">
+            news_title=#{news_title},
+            </if>
+            <if test="news_author_id!=null and news_author_id!=''">
+            news_author_id=#{news_author_id},
+            </if>
+            <if test="news_type!=null and news_type!=''">
+            news_type=#{news_type},
+            </if>
+        </set>
+        where news_id=#{news_id}
+    </update>
+    <update id="newsupdatesta" parameterType="news">
+        update news
+        <set>
+            news_state=#{news_state}
+        </set>
+        where news_id=#{news_id}
+    </update>
+
+</mapper>

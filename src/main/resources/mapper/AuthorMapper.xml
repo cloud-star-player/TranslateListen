@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.systop.dao.AuthorMapper" >
+
+    <select id="authorbyid" resultType="author">
+		select * from author where author_status=1
+    </select>
+    <select id="authorall" resultType="author">
+		select * from author where author_status=1
+    </select>
+    <insert id="authoradd"  parameterType="author">
+        insert into author(author_name,author_image) values (#{author_name},#{author_image})
+    </insert>
+    <select id="authorselectid" parameterType="Integer" resultType="author">
+         select * from author where author_id=#{author_id} and author_status=1
+    </select>
+    <update id="update_author" parameterType="author">
+        update author
+        <set>
+            <if test="author_name!=null and author_name!=''">
+                author_name=#{author_name},
+            </if>
+            <if test="author_image!=null and author_image!=''">
+                author_image=#{author_image},
+            </if>
+        </set>
+        where author_id=#{author_id}
+    </update>
+    <update id="author_delete" parameterType="List">
+        update author
+        <set>
+            author_status=0
+        </set>
+        where author_id in
+        <foreach collection="list" item="author_id" index="index" separator="," open="(" close=")">
+            #{author_id}
+        </foreach>
+    </update>
+    <update id="author_deletefyid" parameterType="Integer">
+        update author set author_status=0 where author_id =#{author_id}
+    </update>
+
+</mapper>

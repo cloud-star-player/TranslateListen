@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.systop.dao.TouXiangMapper" >
+    <select id="touxiangall" resultType="touxiang">
+		select * from touxiang ORDER BY touxiang_id
+    </select>
+    <insert id="touxiangadd"  parameterType="touxiang">
+        insert into touxiang(touxiang_image) values (#{touxiang_image})
+    </insert>
+    <select id="touxiangselectid" parameterType="Integer" resultType="touxiang">
+         select * from touxiang where touxiang_id=#{touxiang_id}
+    </select>
+    <update id="update_touxiang" parameterType="touxiang">
+    update touxiang
+    <set>
+        <if test="touxiang_image!=null and touxiang_image!=''">
+            touxiang_image=#{touxiang_image},
+        </if>
+    </set>
+    where touxiang_id=#{touxiang_id}
+   </update>
+    <delete id="touxiang_delete" parameterType="List">
+        delete from touxiang where touxiang_id in
+        <foreach collection="list" item="touxiang_id" index="index" separator="," open="(" close=")">
+            #{touxiang_id}
+        </foreach>
+    </delete>
+    <delete id="touxiang_deletefyid" parameterType="Integer">
+        delete from touxiang where touxiang_id =#{touxiang_id}
+    </delete>
+    <update id="touxiangupdatesta" parameterType="touxiang">
+        update touxiang
+        <set>
+              touxiang_state=#{touxiang_state}
+        </set>
+        where touxiang_id=#{touxiang_id}
+    </update>
+</mapper>

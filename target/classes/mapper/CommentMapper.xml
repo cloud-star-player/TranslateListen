@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.systop.dao.CommentMapper" >
+    <select id="selectall" resultType="Comment">
+		select * from Comment ORDER BY Comment_id desc
+   </select>
+    <delete id="comment_delete" parameterType="List">
+        delete from Comment where Comment_id in
+        <foreach collection="list" item="Comment_id" index="index" separator="," open="(" close=")">
+            #{Comment_id}
+        </foreach>
+    </delete>
+    <delete id="comment_deletefyid" parameterType="Integer">
+        delete from Comment where Comment_id =#{Comment_id}
+    </delete>
+    <update id="commentupdatesta" parameterType="comment">
+        update comment
+        <set>
+            comment_state=#{comment_state}
+        </set>
+        where comment_id=#{comment_id}
+    </update>
+
+</mapper>

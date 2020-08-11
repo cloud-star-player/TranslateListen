@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.systop.dao.BannerMapper" >
+    <select id="bannerall" resultType="banner">
+		select * from banner ORDER BY banner_weizhi
+    </select>
+    <insert id="banneradd"  parameterType="banner">
+        insert into banner(banner_name,banner_image,banner_weizhi) values (#{banner_name},#{banner_image},#{banner_weizhi})
+    </insert>
+    <select id="bannerselectid" parameterType="Integer" resultType="banner">
+         select * from banner where banner_id=#{banner_id}
+    </select>
+    <update id="update_banner" parameterType="banner">
+    update banner
+    <set>
+        <if test="banner_name!=null and banner_name!=''">
+            banner_name=#{banner_name},
+        </if>
+        <if test="banner_image!=null and banner_image!=''">
+            banner_image=#{banner_image},
+        </if>
+        <if test="banner_weizhi!=null and banner_weizhi!=''">
+            banner_weizhi=#{banner_weizhi},
+        </if>
+    </set>
+    where banner_id=#{banner_id}
+</update>
+    <delete id="banner_delete" parameterType="List">
+        delete from banner where banner_id in
+        <foreach collection="list" item="banner_id" index="index" separator="," open="(" close=")">
+            #{banner_id}
+        </foreach>
+    </delete>
+    <delete id="banner_deletefyid" parameterType="Integer">
+        delete from banner where banner_id =#{banner_id}
+    </delete>
+    <select id="bannerweizhi" parameterType="Integer" resultType="banner">
+		select * from banner where banner_weizhi=#{banner_weizhi}
+    </select>
+    <update id="bannerupdatesta" parameterType="banner">
+        update banner
+        <set>
+              banner_state=#{banner_state}
+        </set>
+        where banner_id=#{banner_id}
+    </update>
+</mapper>

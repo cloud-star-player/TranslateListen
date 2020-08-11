@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.systop.dao.UserMapper" >
+
+  <!--<select id="login" parameterType="String" resultType="user">-->
+		<!--select * from user where user_code= #{user_code} and user_password=#{user_password}-->
+  <!--</select>-->
+    <!--<sql id="add_insertsql">-->
+         <!--user_code,user_name,user_password,user_state,user_date-->
+    <!--</sql>-->
+    <!--<sql id="add_insertsqlw">-->
+         <!--#{user_code},#{user_name},#{user_password},#{user_state},NOW()-->
+    <!--</sql>-->
+    <!--<insert id="add" parameterType="User">-->
+        <!--insert into user (<include refid="add_insertsql" />) values-->
+        <!--(<include refid="add_insertsqlw"/>)-->
+    <!--</insert>-->
+    <select id="selectall" resultType="user">
+		select * from user where user_state=1 ORDER BY user_id
+   </select>
+    <select id="select" parameterType="Integer" resultType="user">
+		select * from user where user_id=#{user_id}
+  </select>
+    <update id="update_user" parameterType="user">
+        update user
+        <set>
+        user_password=#{user_password}
+        </set>
+        where user_id=#{user_id}
+    </update>
+    <update id="user_delete" parameterType="List">
+        update user set user_state=0 where user_id in
+        <foreach collection="list" item="user_id" index="index" separator="," open="(" close=")">
+            #{user_id}
+        </foreach>
+    </update>
+    <update id="user_deletefyid" parameterType="Integer">
+        update user set user_state=0 where user_id =#{user_id}
+    </update>
+
+    <update id="update_read" parameterType="List">
+        update user
+        <set>
+        user_readcount=user_readcount+1
+        </set>
+        where user_id in
+        <foreach collection="list" item="relationship_user_id" index="index" open="(" close=")" separator=",">
+            #{relationship_user_id}
+        </foreach>
+    </update>
+    <select id="seletcrelation" parameterType="Integer" resultType="Integer">
+       select relationship_user_id from relationship where relationship_author_id=#{relationship_author_id}
+    </select>
+
+
+</mapper>
